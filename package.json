@@ -1,0 +1,23 @@
+{
+  "name": "grunt-jsl10n",
+  "version": "0.1.0",
+  "description": "A Grunt plugin to handle string localization. ",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/alberto-chiesa/grunt-jsl10n.git"
+  },
+  "keywords": [
+    "grunt",
+    "l10n"
+  ],
+  "author": "ACA",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alberto-chiesa/grunt-jsl10n/issues"
+  },
+  "homepage": "https://github.com/alberto-chiesa/grunt-jsl10n"
+}
