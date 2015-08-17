@@ -668,9 +668,12 @@ fragment EscapeSequence
 	)
 	;
 
-StringLiteral
+SingleQuotedStringLiteral
 	: '\'' ( ~( [\'\\\r\n\u2028\u2029] ) | EscapeSequence )* '\''
-	| '"' ( ~( ["\\\r\n\u2028\u2029] ) | EscapeSequence )* '"'
+	;
+	
+DoubleQuotedStringLiteral
+	: '"' ( ~( ["\\\r\n\u2028\u2029] ) | EscapeSequence )* '"'
 	;
 
 // $>

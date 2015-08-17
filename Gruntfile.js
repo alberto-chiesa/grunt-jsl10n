@@ -34,9 +34,12 @@ module.exports = function(grunt) {
         options: {
         },
         files: {
-          'tmp/default_options': ['test/fixtures/testing', 'test/fixtures/123']
+          'tmp/jquery-1.11.3.l10n.js': 'test/fixtures/jquery-1.11.3.js',
+					'tmp/jquery-2.1.4.l10n.js':  'test/fixtures/jquery-2.1.4.js',
+					'tmp/prototype.l10n.js':  'test/fixtures/prototype.js',
+					'tmp/smallscript.l10n.js':  'test/fixtures/smallscript.js',
         }
-      },
+      }/*,
       custom_options: {
         options: {
           separator: ': ',
@@ -45,7 +48,7 @@ module.exports = function(grunt) {
         files: {
           'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
         }
-      }
+      }*/
     },
 
     // Unit tests.
