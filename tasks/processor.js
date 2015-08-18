@@ -4,7 +4,7 @@
  * a specific prefix will be transformed into a Function call.
  */
 
-'use strict'
+'use strict';
 
 var ESLexer = require('./EcmaScriptLexer'),
 	antlr4 = require('./antlr4/index');
@@ -12,13 +12,15 @@ var ESLexer = require('./EcmaScriptLexer'),
 var Processor = function(options) {
 	var me = this;
 	
-	if (!options) throw new Error('options parameter is mandatory');
+	if (!options) {
+		throw new Error('options parameter is mandatory');
+	}
 	
 	me.prefix = options.prefix;
 	me.locFn = options.locFn;
 	me._doubleQuotedPrefix = '\"' + options.prefix;
 	me._singleQuotedPrefix = '\'' + options.prefix;
-}
+};
 
 Processor.prototype.process = function(script) {
 	var res = '', me = this,
@@ -54,6 +56,6 @@ Processor.prototype.processTokenText = function(token) {
 	}
 
 	return tokenText;
-}
+};
 
 module.exports = Processor;

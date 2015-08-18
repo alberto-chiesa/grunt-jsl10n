@@ -1,6 +1,26 @@
 # grunt-jsl10n
 
-> The best Grunt plugin ever.
+> A plugin for localization resources estraction and transformation.
+
+When localizing an application, a common approach is to litter the application code with calls to a common localization function. E.g.:
+
+```js
+alert(l10n.T("Your localizable message"));
+```
+
+The approach used by this plugin is quite the opposite: instead of manually inserting the calls, you just prepend a common prefix (usually "res:") to your localizable code:
+
+```js
+alert("res:Your localizable message");
+```
+
+When the plugin runs, the output will be the exact same code in the first snippet (note that the "res:" prefix will be removed).
+Why choose this strategy over the other, more common approach? Well, using this method the jsl10n plugin is able to extract a list of resources, to be fed into your localization process.
+
+Jsl10n is great (and irreplaceable) if you use code generation tools like the Sencha Architect, which are great but do not offer an obvious way to handle localization.
+
+### The resources file
+TODO
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -37,29 +57,41 @@ grunt.initConfig({
 
 ### Options
 
-#### options.separator
+#### options.prefix
 Type: `String`
-Default value: `',  '`
+Default value: `'res:'`
 
-A string value that is used to do something with whatever.
+This is the string prefix which is searched to identify localizable strings.
 
-#### options.punctuation
+#### options.locFn
 Type: `String`
-Default value: `'.'`
+Default value: `'l10n.T'`
 
-A string value that is used to do something else with whatever else.
+The name of the localization function which will be injected around localizable strings.
+
+#### options.resourcesFile
+Type: `String`
+Default value: `null`
+
+The path to the Json file which will hold the list of localizable strings.
+
+#### options.resourcesContext
+Type: `String`
+Default value: `default`
+
+The resources file is split into multiple resources blocks, called contexts. This option specifies in which context the extracted resources will end.
 
 ### Usage Examples
 
-#### Default Options
-In this example, the default options are used to do something with whatever. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result would be `Testing, 1 2 3.`
+#### Default options
+In this example the script.js file is scanned, every string starting with "res:" is replaced with a call to l10n.T(...), and no resources output file is configured.
 
 ```js
 grunt.initConfig({
   jsl10n: {
     options: {},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/script.localized.js': 'src/script.js'
     },
   },
 });
