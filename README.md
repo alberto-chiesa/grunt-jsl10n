@@ -1,6 +1,6 @@
 # grunt-jsl10n
 
-> A plugin for localization resources estraction and transformation.
+> A plugin for localization resources extraction and transformation.
 
 When localizing an application, a common approach is to litter the application code with calls to a common localization function. E.g.:
 
@@ -20,7 +20,45 @@ Why choose this strategy over the other, more common approach? Well, using this 
 Jsl10n is great (and irreplaceable) if you use code generation tools like the Sencha Architect, which are great but do not offer an obvious way to handle localization.
 
 ### The resources file
-TODO
+The resources file is a json file describing an object. Every object property defines a context, which is a associated to a task. As an example, you could have 2 pages in your application, "firt" and "second". You would setup two tasks as below:
+
+```js
+grunt.initConfig({
+  jsl10n: {
+		firstPage: {
+			options: {
+				resourcesFile: 'resources.json',
+				resourcesContext: 'first'
+			},
+			files: {
+				'first.l10n.js':  'first.js'
+			}
+		},
+		secondPage: {
+			options: {
+				resourcesFile: 'resources2.json',
+				resourcesContext: 'second'
+			},
+			files: {
+				'second.l10n.js':  'second.js'
+			}
+		}
+	},
+});
+```
+
+The resulting resorces file will look like:
+
+```js
+{
+	"first": [ ... resources extracted from first.js ... ],
+	"second": [ ... resources extracted from second.js ... ],
+}
+```
+
+How to use the resources.json in order to load your server side is up to you.
+
+
 
 ## Getting Started
 This plugin requires Grunt `~0.4.5`
@@ -79,7 +117,7 @@ The path to the Json file which will hold the list of localizable strings.
 Type: `String`
 Default value: `default`
 
-The resources file is split into multiple resources blocks, called contexts. This option specifies in which context the extracted resources will end.
+The resources file is split into multiple resources blocks, called contexts.
 
 ### Usage Examples
 
@@ -118,4 +156,5 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
-_(Nothing yet)_
+v0.2.0 First implementation of resources file.
+v0.1	Early Draft

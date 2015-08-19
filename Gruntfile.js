@@ -30,8 +30,9 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     jsl10n: {
-      default_options: {
+      simple_test: {
         options: {
+					resourcesFile: 'tmp/resources.json'
         },
         files: {
           'tmp/jquery-1.11.3.l10n.js': 'test/fixtures/jquery-1.11.3.js',
@@ -39,16 +40,29 @@ module.exports = function(grunt) {
 					'tmp/prototype.l10n.js':  'test/fixtures/prototype.js',
 					'tmp/smallscript.l10n.js':  'test/fixtures/smallscript.js',
         }
-      }/*,
-      custom_options: {
+      },
+      testCtx1: {
         options: {
-          separator: ': ',
-          punctuation: ' !!!'
+					prefix: 't/',
+					locFn: 'T',
+					resourcesFile: 'tmp/resources2.json',
+					resourcesContext: 'first'
         },
         files: {
-          'tmp/custom_options': ['test/fixtures/testing', 'test/fixtures/123']
+					'tmp/testctxscript.1.l10n.js':  'test/fixtures/testctxscript.js'
         }
-      }*/
+      },
+      testCtx2: {
+        options: {
+					prefix: 't/',
+					locFn: 'X',
+					resourcesFile: 'tmp/resources2.json',
+					resourcesContext: 'second'
+        },
+        files: {
+					'tmp/testctxscript.2.l10n.js':  'test/fixtures/testctxscript.js'
+        }
+      }
     },
 
     // Unit tests.

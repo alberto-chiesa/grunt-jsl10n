@@ -27,7 +27,7 @@ exports.jsl10n = {
     // setup here if necessary
     done();
   },
-  default_options: function(test) {
+  simple_test: function(test) {
     test.expect(4);
 
     var actual = grunt.file.read('tmp/jquery-1.11.3.l10n.js');
@@ -47,14 +47,25 @@ exports.jsl10n = {
     test.equal(actual, expected, 'The smallscript file was not processed correctly.');
 
     test.done();
-  }/*,
-  custom_options: function(test) {
-    test.expect(1);
+  },
+  testCtx: function(test) {
+		var actual, expected;
+    test.expect(3);
 
-    var actual = grunt.file.read('tmp/custom_options');
-    var expected = grunt.file.read('test/expected/custom_options');
-    test.equal(actual, expected, 'should describe what the custom option(s) behavior is.');
+    actual = grunt.file.read('tmp/testctxscript.1.l10n.js');
+    expected = grunt.file.read('test/expected/testctxscript.expected.1.js');
+    test.equal(actual, expected, 'The testctxscript1 file was not processed correctly.');
 
+		actual = grunt.file.read('tmp/testctxscript.2.l10n.js');
+    expected = grunt.file.read('test/expected/testctxscript.expected.2.js');
+    test.equal(actual, expected, 'The testctxscript2 file was not processed correctly.');
+
+		actual = grunt.file.readJSON('tmp/resources2.json');
+		test.deepEqual(actual, {
+			first: ["Tasty\"", "Test"],
+			second: ["Tasty\"", "Test"]
+		}, 'The extracted resources are not equal!');
+		
     test.done();
-  },*/
+  },
 };

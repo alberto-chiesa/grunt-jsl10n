@@ -7,7 +7,8 @@
 'use strict';
 
 var ESLexer = require('./EcmaScriptLexer'),
-	antlr4 = require('./antlr4/index');
+	antlr4 = require('./antlr4/index'),
+	_ = require('lodash');
 
 var Processor = function(options) {
 	var me = this;
@@ -38,24 +39,29 @@ Processor.prototype.process = function(script) {
 	return res;
 };
 
+// jshint evil:true
+Processor.prototype.escapeResource = function(res) {
+	this.exportResources[eval(res)] = true;
+	return this.locFn + '(' + res + ')';
+};
+
 Processor.prototype.processTokenText = function(token) {
 	var me = this,
 		prefixLen = me._doubleQuotedPrefix.length,
 		tokenText = token.text,
-		prefix = tokenText.substr(0, prefixLen),
-		localizableTxt;
+		prefix = tokenText.substr(0, prefixLen);
 
 	if (prefix === me._doubleQuotedPrefix) {
-		localizableTxt = tokenText.substr(prefixLen);
-		me.exportResources['\"' + localizableTxt] = true;
-		return me.locFn + '(\"' + localizableTxt + ')';
+		return me.escapeResource('\"' + tokenText.substr(prefixLen));
 	} else if (prefix === me._singleQuotedPrefix) {
-		localizableTxt = tokenText.substr(prefixLen);
-		me.exportResources['\'' + localizableTxt] = true;
-		return me.locFn + '(\'' + localizableTxt + ')';
+		return me.escapeResource('\'' + tokenText.substr(prefixLen));
 	}
 
 	return tokenText;
 };
+
+Processor.prototype.getResources = function() {
+	return _.keys(this.exportResources).sort();
+}
 
 module.exports = Processor;
