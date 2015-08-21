@@ -136,17 +136,19 @@ grunt.initConfig({
 ```
 
 #### Custom Options
-In this example, custom options are used to do something else with whatever else. So if the `testing` file has the content `Testing` and the `123` file had the content `1 2 3`, the generated result in this case would be `Testing: 1 2 3 !!!`
+In this example, the localizable strings are identified by a "t/" prefix, the localization function is simpy called "localize", and the strings gathered during the scan are inserted into a resources.json file, under the property "myScript".
 
 ```js
 grunt.initConfig({
   jsl10n: {
     options: {
-      separator: ': ',
-      punctuation: ' !!!',
-    },
+			prefix: "t/",
+			locFn: "localize",
+			resourcesFile: "dest/resources.json",
+			resourcesContext: "myScript"
+		},
     files: {
-      'dest/default_options': ['src/testing', 'src/123'],
+      'dest/script.localized.js': 'src/script.js'
     },
   },
 });
@@ -156,5 +158,7 @@ grunt.initConfig({
 In lieu of a formal styleguide, take care to maintain the existing coding style. Add unit tests for any new or changed functionality. Lint and test your code using [Grunt](http://gruntjs.com/).
 
 ## Release History
+
 v0.2.0 First implementation of resources file.
+
 v0.1	Early Draft

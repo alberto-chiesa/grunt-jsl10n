@@ -30,7 +30,7 @@ module.exports = function(grunt) {
 
     // Configuration to be run (and then tested).
     jsl10n: {
-      simple_test: {
+      simpleTest: {
         options: {
 					resourcesFile: 'tmp/resources.json'
         },
