@@ -159,6 +159,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+v0.2.2 Removed useless v8-pofiler dependency. Soorry!
+
+v0.2.1 Documentation changes.
+
 v0.2.0 First implementation of resources file.
 
 v0.1	Early Draft
