@@ -35,7 +35,7 @@
     "v8-profiler": "^5.2.9"
   },
   "peerDependencies": {
-    "grunt": "~0.4.5"
+    "grunt": ">=0.4.0"
   },
   "keywords": [
     "gruntplugin",
