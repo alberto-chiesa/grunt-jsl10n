@@ -1,7 +1,7 @@
 {
   "name": "grunt-jsl10n",
   "description": "An easy to use string localization plugin.",
-  "version": "0.2.2",
+  "version": "0.2.6",
   "homepage": "https://github.com/alberto-chiesa/grunt-jsl10n",
   "author": {
     "name": "Alberto",
@@ -27,18 +27,19 @@
     "test": "grunt test"
   },
   "devDependencies": {
-    "grunt": "~0.4.5",
-    "grunt-contrib-clean": "^0.5.0",
-    "grunt-contrib-jshint": "^0.9.2",
-    "grunt-contrib-nodeunit": "^0.3.3",
-    "lodash": "^3.10.1",
-    "v8-profiler": "^5.2.9"
+    "grunt": ">=0.4.5",
+    "grunt-contrib-clean": ">=0.5.0",
+    "grunt-contrib-jshint": ">=0.9.2",
+    "grunt-contrib-nodeunit": ">=0.3.3"
   },
   "peerDependencies": {
-    "grunt": "~0.4.5"
+    "grunt": ">=0.4.5"
   },
   "keywords": [
     "gruntplugin",
     "l10n"
-  ]
+  ],
+  "dependencies": {
+    "lodash": "^4.15.0"
+  }
 }
