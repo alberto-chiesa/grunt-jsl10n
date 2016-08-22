@@ -10,62 +10,49 @@
 
 var Processor = require('./processor');
 
-module.exports = function(grunt) {
-  grunt.registerMultiTask('jsl10n', 'The best Grunt plugin ever.', function() {
-    var options = this.options({
-				prefix: 'res:',
-				locFn: 'l10n.T',
-				resourcesContext: 'default',
-				resourcesFile: null
-			}),
-			p = new Processor(options);
-			
-    // Iterate over all specified file groups.
-    this.files.forEach(processFileGroupInClojure(grunt, p, options));
-		
-		if (options.resourcesFile) {
-			writeResourcesFile(grunt, p, options);
-		}
-  });
 
-};
-
+// Reads all the existing files and normalizes the newlines,
+// then invokes the Processor to do it's "thing" with string
+// literals.
 function processFileGroupInClojure(grunt, p, options) {
-	return function(f) {
-		// Concat specified files.
-		var src = f.src.filter(function(filepath) {
-				// Warn on and remove invalid source files (if nonull was set).
-				if (!grunt.file.exists(filepath)) {
-					grunt.log.warn('Source file "' + filepath + '" not found.');
-					return false;
-				} else {
-					return true;
-				}
-			}).map(function(filepath) {
-				// Read file source.
-				return grunt.file.read(filepath);
-			}).join(grunt.util.normalizelf('\n')),
-			dest = p.process(src);
-
-		
-		// Write the destination file.
-		grunt.file.write(f.dest, dest);
-
-		// Print a success message.
-		grunt.log.writeln('File "' + f.dest + '" created.');
-	}
+  return function(f) {
+    var fileCheck = function(filepath) {
+        var flag = grunt.file.exists(filepath);
+        if (!flag) { grunt.log.warn('Source file "' + filepath + '" not found.'); }
+        return flag;
+      },      
+      contents = f.src.filter(fileCheck).map(grunt.file.read).join('\n');
+    
+    grunt.file.write(f.dest, p.process(contents), {encoding: 'utf8'});
+    grunt.log.writeln('File "' + f.dest + '" created.');
+  };
 }
 
 function writeResourcesFile(grunt, p, options) {
-	var resources = grunt.file.exists(options.resourcesFile) ?
-		grunt.file.readJSON(options.resourcesFile) :
-		{};
+  var resources = grunt.file.exists(options.resourcesFile) ? grunt.file.readJSON(options.resourcesFile) : {};
 
-	resources[options.resourcesContext || 'default'] = p.getResources();
-	
-	grunt.file.write(
-		options.resourcesFile,
-		JSON.stringify(resources, null, '  '),
-		{encoding: 'utf8'}
-	);
+  resources[options.resourcesContext || 'default'] = p.getResources();
+  
+  grunt.file.write(options.resourcesFile, JSON.stringify(resources, null, '  '), {encoding: 'utf8'});
 }
+
+module.exports = function(grunt) {
+  grunt.registerMultiTask('jsl10n', 'The best Grunt plugin ever.', function() {
+    var options = this.options({
+        prefix: 'res:',
+        locFn: 'l10n.T',
+        resourcesContext: 'default',
+        resourcesFile: null
+      }),
+      p = new Processor(options),
+      processFileGroupFunction = processFileGroupInClojure(grunt, p, options);
+      
+    // Iterate over all specified file groups.
+    this.files.forEach(processFileGroupFunction);
+    
+    if (options.resourcesFile) {
+      writeResourcesFile(grunt, p, options);
+    }
+  });
+
+};

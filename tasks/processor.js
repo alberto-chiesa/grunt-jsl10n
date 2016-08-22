@@ -1,3 +1,4 @@
+// jshint evil:true
 /**
  * The Processor class is responsible for the elaboration of the content of
  * js files. The script will be tokenized, and every string literal matching
@@ -7,61 +8,61 @@
 'use strict';
 
 var ESLexer = require('./EcmaScriptLexer'),
-	antlr4 = require('./antlr4/index'),
-	_ = require('lodash');
+  antlr4 = require('./antlr4/index'),
+  _ = require('lodash');
 
 var Processor = function(options) {
-	var me = this;
-	
-	if (!options) {
-		throw new Error('options parameter is mandatory');
-	}
-	
-	me.prefix = options.prefix;
-	me.locFn = options.locFn;
-	me._doubleQuotedPrefix = '\"' + options.prefix;
-	me._singleQuotedPrefix = '\'' + options.prefix;
+  var me = this;
+  
+  if (!options) {
+    throw new Error('options parameter is mandatory');
+  }
+  
+  me.prefix = options.prefix;
+  me.locFn = options.locFn;
+  me._doubleQuotedPrefix = '\"' + options.prefix;
+  me._singleQuotedPrefix = '\'' + options.prefix;
+  me._prefixLength = me._doubleQuotedPrefix.length;
 };
 
-Processor.prototype.process = function(script) {
-	var res = '', me = this,
-		chars = new antlr4.InputStream(script),
-		lexer = new ESLexer.EcmaScriptLexer(chars),
-		tokens = new antlr4.CommonTokenStream(lexer);
-	
-	me.exportResources = {};
-	
-	while(tokens.LT().type >= 0) {
-		res += me.processTokenText(tokens.LT());
-		tokens.consume();
-	}
+Processor.prototype = {
+  process: function(script) {
+    var res = '',
+      chars = new antlr4.InputStream(script),
+      lexer = new ESLexer.EcmaScriptLexer(chars),
+      tokens = new antlr4.CommonTokenStream(lexer),
+      i, lastI;
 
-	return res;
+    this.exportResources = {};
+    
+    while(tokens.LT(1).type >= 0) {
+      tokens.consume();
+    }
+
+    for(i = 0, lastI = tokens.tokens.length - 1; i < lastI; i++) {
+      res += this.processTokenText(tokens.tokens[i]);
+    }
+
+    return res;
+  },
+  processTokenText: function(token) {
+    var prefix = token.text.substr(0, this._prefixLength);
+    
+    if (prefix === this._doubleQuotedPrefix) {
+      return this.escapeResource('\"' + token.text.substr(this._prefixLength));
+    } else if (prefix === this._singleQuotedPrefix) {
+      return this.escapeResource('\'' + token.text.substr(this._prefixLength));
+    }
+
+    return token.text;
+  },
+  escapeResource: function(res) {
+    this.exportResources[eval(res)] = true;
+    return this.locFn + '(' + res + ')';
+  },
+  getResources: function() {
+    return _.keys(this.exportResources).sort();
+  }
 };
-
-// jshint evil:true
-Processor.prototype.escapeResource = function(res) {
-	this.exportResources[eval(res)] = true;
-	return this.locFn + '(' + res + ')';
-};
-
-Processor.prototype.processTokenText = function(token) {
-	var me = this,
-		prefixLen = me._doubleQuotedPrefix.length,
-		tokenText = token.text,
-		prefix = tokenText.substr(0, prefixLen);
-
-	if (prefix === me._doubleQuotedPrefix) {
-		return me.escapeResource('\"' + tokenText.substr(prefixLen));
-	} else if (prefix === me._singleQuotedPrefix) {
-		return me.escapeResource('\'' + tokenText.substr(prefixLen));
-	}
-
-	return tokenText;
-};
-
-Processor.prototype.getResources = function() {
-	return _.keys(this.exportResources).sort();
-}
 
 module.exports = Processor;

@@ -28,7 +28,7 @@ exports.jsl10n = {
     done();
   },
   simple_test: function(test) {
-    test.expect(4);
+    test.expect(5);
 
     var actual = grunt.file.read('tmp/jquery-1.11.3.l10n.js');
     var expected = grunt.file.read('test/fixtures/jquery-1.11.3.js');
@@ -44,6 +44,10 @@ exports.jsl10n = {
 
     actual = grunt.file.read('tmp/smallscript.l10n.js');
     expected = grunt.file.read('test/expected/smallscript.expected.js');
+    test.equal(actual, expected, 'The smallscript file was not processed correctly.');
+
+    actual = grunt.file.read('tmp/regex.js');
+    expected = grunt.file.read('test/expected/regex.js');
     test.equal(actual, expected, 'The smallscript file was not processed correctly.');
 
     test.done();

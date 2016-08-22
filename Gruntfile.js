@@ -32,35 +32,36 @@ module.exports = function(grunt) {
     jsl10n: {
       simpleTest: {
         options: {
-					resourcesFile: 'tmp/resources.json'
+          resourcesFile: 'tmp/resources.json'
         },
         files: {
           'tmp/jquery-1.11.3.l10n.js': 'test/fixtures/jquery-1.11.3.js',
-					'tmp/jquery-2.1.4.l10n.js':  'test/fixtures/jquery-2.1.4.js',
-					'tmp/prototype.l10n.js':  'test/fixtures/prototype.js',
-					'tmp/smallscript.l10n.js':  'test/fixtures/smallscript.js',
+          'tmp/jquery-2.1.4.l10n.js':  'test/fixtures/jquery-2.1.4.js',
+          'tmp/prototype.l10n.js':  'test/fixtures/prototype.js',
+          'tmp/smallscript.l10n.js':  'test/fixtures/smallscript.js',
+          'tmp/regex.js': 'test/fixtures/regex.js'
         }
       },
       testCtx1: {
         options: {
-					prefix: 't/',
-					locFn: 'T',
-					resourcesFile: 'tmp/resources2.json',
-					resourcesContext: 'first'
+          prefix: 't/',
+          locFn: 'T',
+          resourcesFile: 'tmp/resources2.json',
+          resourcesContext: 'first'
         },
         files: {
-					'tmp/testctxscript.1.l10n.js':  'test/fixtures/testctxscript.js'
+          'tmp/testctxscript.1.l10n.js':  'test/fixtures/testctxscript.js'
         }
       },
       testCtx2: {
         options: {
-					prefix: 't/',
-					locFn: 'X',
-					resourcesFile: 'tmp/resources2.json',
-					resourcesContext: 'second'
+          prefix: 't/',
+          locFn: 'X',
+          resourcesFile: 'tmp/resources2.json',
+          resourcesContext: 'second'
         },
         files: {
-					'tmp/testctxscript.2.l10n.js':  'test/fixtures/testctxscript.js'
+          'tmp/testctxscript.2.l10n.js':  'test/fixtures/testctxscript.js'
         }
       }
     },

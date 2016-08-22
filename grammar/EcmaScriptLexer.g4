@@ -1,5 +1,31 @@
 lexer grammar EcmaScriptLexer;
 
+
+@members {
+EcmaScriptLexer.prototype.nextToken = function() {
+  var result = antlr4.Lexer.prototype.nextToken.call(this, arguments);
+  if (result.channel !== antlr4.Lexer.HIDDEN) {
+    this._Last = result;
+  }
+  
+  return result;
+}
+
+EcmaScriptLexer.prototype.isRegExEnabled = function() {
+  var la = this._Last ? this._Last.type : null;
+  return la !== EcmaScriptLexer.Identifier &&
+    la !== EcmaScriptLexer.NULL &&
+    la !== EcmaScriptLexer.TRUE &&
+    la !== EcmaScriptLexer.FALSE &&
+    la !== EcmaScriptLexer.THIS &&
+    la !== EcmaScriptLexer.OctalIntegerLiteral &&
+    la !== EcmaScriptLexer.DecimalLiteral &&
+    la !== EcmaScriptLexer.HexIntegerLiteral &&
+    la !== EcmaScriptLexer.StringLiteral &&
+    la !== EcmaScriptLexer.RBRACK &&
+    la !== EcmaScriptLexer.RPAREN;
+}}
+
 tokens {
 	// Reserved words
 	NULL, TRUE, FALSE,
@@ -137,7 +163,6 @@ DIVASS : '/=';
 //
 // $<	A.1 Lexical Grammar (7)
 //
-
 fragment BSLASH : '\\';
 fragment DQUOTE : '"';
 fragment SQUOTE : '\'';
@@ -173,23 +198,21 @@ fragment USP // Unicode Space Separator (rest of Unicode category Zs)
 	| '\u3000'  // IDEOGRAPHIC SPACE
 	;
 
-WhiteSpace
-	: ( TAB | VT | FF | SP | NBSP | USP )+
-	;
+WhiteSpace : ( TAB | VT | FF | SP | NBSP | USP )+  -> channel(HIDDEN);
 
 // $>
 
 // $<	Line terminators (7.3)
 		
-EOL : ( ( '\r' '\n'? ) | '\n' | '\u2028' | '\u2029' );
+EOL : ( ( '\r' '\n'? ) | '\n' | '\u2028' | '\u2029' )  -> channel(HIDDEN);
 
 // $>
 
 // $<	Comments (7.4)
 
-MultiLineComment : '/*' .*? '*/';
+MultiLineComment : '/*' .*? '*/'  -> channel(HIDDEN);
 
-SingleLineComment : '//' ( ~( '\r' | '\n' | '\u2028' | '\u2029' ) )*;
+SingleLineComment : '//' ( ~( '\r' | '\n' | '\u2028' | '\u2029' ) )*  -> channel(HIDDEN);
 
 // $>
 
@@ -331,9 +354,9 @@ fragment RegularExpressionChar
 	| BackslashSequence
 	| RegularExpressionCharSet
 	;
-	
+
 RegularExpressionLiteral
-	: DIV RegularExpressionFirstChar RegularExpressionChar* DIV IdentifierPart*
+	: DIV {this.isRegExEnabled()}? RegularExpressionFirstChar RegularExpressionChar* DIV IdentifierPart*
 	;
 
 // $>
