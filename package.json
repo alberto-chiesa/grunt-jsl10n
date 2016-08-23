@@ -1,7 +1,7 @@
 {
   "name": "grunt-jsl10n",
   "description": "An easy to use string localization plugin.",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "homepage": "https://github.com/alberto-chiesa/grunt-jsl10n",
   "author": {
     "name": "Alberto",

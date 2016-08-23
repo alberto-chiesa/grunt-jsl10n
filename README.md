@@ -159,6 +159,10 @@ In lieu of a formal styleguide, take care to maintain the existing coding style.
 
 ## Release History
 
+v0.2.7 Fixed a bug in the lexer for regular expression literals interpretation.
+
+v0.2.6 Lodash is now a proper dependency and not a dev-dependency.
+
 v0.2.2 Removed useless v8-pofiler dependency. Soorry!
 
 v0.2.1 Documentation changes.
